@@ -31,12 +31,14 @@ const getGradeStyles = (grade) => {
 export default function HomeScreen() {
     const [studentId, setStudentId] = useState("");
     const [student, setStudent] = useState(null);
+    const [searched, setSearched] = useState(false);
 
     const handleSearch = () => {
         const found = students.find(
             (s) => s.id.toLowerCase() === studentId.toLowerCase()
         );
         setStudent(found || null);
+        setSearched(true);
     };
 
     return (
@@ -49,59 +51,69 @@ export default function HomeScreen() {
                     type="text"
                     placeholder="Enter Student ID"
                     value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
+                    onChange={(e) => {
+                        setStudentId(e.target.value);
+                        setSearched(false); // Reset search state when typing
+                    }}
                 />
                 <button onClick={handleSearch}>Search</button>
             </div>
 
-            {/* Show image before searching */}
-            {!student && !studentId && (
+            {/* Always show ICT image until search is clicked */}
+            {(!searched || !student) && (
                 <div className="card image-card">
                     <img src={ictImage} alt="ICT" className="ict-image" />
                 </div>
             )}
 
-            {student
-                ? (() => {
-                      const grade = getGrade(student.total);
-                      const { bg, color } = getGradeStyles(grade);
+            {searched && student && (
+                <div
+                    className="card"
+                    style={{
+                        borderTop: `6px solid ${
+                            getGradeStyles(getGrade(student.total)).bg
+                        }`,
+                    }}
+                >
+                    <h2>Hi {student.name} 👋</h2>
+                    <p className="total">
+                        <strong>Total Marks:</strong> {student.total}
+                    </p>
+                    <p className="grade">
+                        Final Grade:{" "}
+                        <span
+                            className="grade-badge"
+                            style={{
+                                backgroundColor: getGradeStyles(
+                                    getGrade(student.total)
+                                ).bg,
+                                color: getGradeStyles(getGrade(student.total))
+                                    .color,
+                            }}
+                        >
+                            {getGrade(student.total)}
+                        </span>
+                    </p>
+                    <div className="marks">
+                        <div className="mark-item">
+                            <span>📝 MCQ</span>
+                            <b>{student.mcq}</b>
+                        </div>
+                        <div className="mark-item">
+                            <span>📖 Structured</span>
+                            <b>{student.structured}</b>
+                        </div>
+                        <div className="mark-item">
+                            <span>✍️ Essay</span>
+                            <b>{student.essay}</b>
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                      return (
-                          <div
-                              className="card"
-                              style={{ borderTop: `6px solid ${bg}` }}
-                          >
-                              <h2>Hi {student.name} 👋</h2>
-                              <p className="total">
-                                  <strong>Total Marks:</strong> {student.total}
-                              </p>
-                              <p className="grade">
-                                  Final Grade:{" "}
-                                  <span
-                                      className="grade-badge"
-                                      style={{ backgroundColor: bg, color }}
-                                  >
-                                      {grade}
-                                  </span>
-                              </p>
-                              <div className="marks">
-                                  <div className="mark-item">
-                                      <span>📝 MCQ</span>
-                                      <b>{student.mcq}</b>
-                                  </div>
-                                  <div className="mark-item">
-                                      <span>📖 Structured</span>
-                                      <b>{student.structured}</b>
-                                  </div>
-                                  <div className="mark-item">
-                                      <span>✍️ Essay</span>
-                                      <b>{student.essay}</b>
-                                  </div>
-                              </div>
-                          </div>
-                      );
-                  })()
-                : studentId && <p className="error">❌ No student found</p>}
+            {searched && !student && (
+                <p className="error">❌ No student found</p>
+            )}
         </div>
     );
 }
