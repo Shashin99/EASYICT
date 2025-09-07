@@ -1,10 +1,11 @@
 /* General container */
 .container {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     min-height: 100vh;
     background: linear-gradient(135deg, #f3f4f7, #dbeafe);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    transition: background 0.5s ease;
 }
 
 /* Title & subtitle */
@@ -66,10 +67,10 @@
     padding: 25px;
     border-radius: 12px;
     width: 360px;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
     text-align: center;
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .card:hover {
@@ -83,14 +84,10 @@
 }
 
 /* Marks & grade */
-.total {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
+.total,
 .grade {
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .grade-badge {
@@ -99,6 +96,25 @@
     font-weight: bold;
     font-size: 14px;
     display: inline-block;
+    color: white;
+}
+
+/* Grade colors */
+.grade-A {
+    background-color: #28a745;
+}
+.grade-B {
+    background-color: #17a2b8;
+}
+.grade-C {
+    background-color: #ffc107;
+    color: #222;
+}
+.grade-S {
+    background-color: #6c757d;
+}
+.grade-W {
+    background-color: #dc3545;
 }
 
 /* Marks section */
@@ -137,7 +153,7 @@
     border-radius: 12px;
     overflow: hidden;
     width: 380px;
-    margin: 0 auto;
+    margin: 0 auto 20px auto;
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -145,16 +161,17 @@
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 12px;
 }
 
 /* ✅ Mobile responsiveness */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .container {
-        padding: 20px;
+        padding: 20px 10px;
     }
 
     .title {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .subtitle {
@@ -189,5 +206,29 @@
     .search-box button {
         width: 95%;
         margin: 5px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 20px;
+    }
+
+    .card h2 {
+        font-size: 18px;
+    }
+
+    .search-box input,
+    .search-box button {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .marks {
+        gap: 10px;
+    }
+
+    .mark-item b {
+        font-size: 16px;
     }
 }
